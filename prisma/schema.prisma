@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model FacultyMember {
+  id          String   @id @default(cuid())
+  name        String
+  role        String   @default("")
+  experience  String   @default("")
+  expertise   String   @default("")
+  photoUrl    String   @default("")
+  isFounder   Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  branch      String   @default("All Branches")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model GalleryImage {
+  id          String   @id @default(cuid())
+  title       String
+  category    String   @default("photos")
+  caption     String   @default("")
+  section     String   @default("")
+  imageUrl    String
+  description String   @default("")
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Video {
+  id          String   @id @default(cuid())
+  title       String
+  youtubeUrl  String   @default("")
+  videoUrl    String   @default("")
+  videoId     String   @default("")
+  section     String   @default("")
+  description String   @default("")
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Course {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  title         String
+  subtitle      String   @default("")
+  icon          String   @default("GraduationCap")
+  duration      String   @default("")
+  fees          String   @default("")
+  description   String   @default("")
+  overview      String   @default("")
+  syllabus       String   @default("[]")
+  benefits      String   @default("[]")
+  color         String   @default("from-brand-purple to-brand-purple-dark")
+  popular       Boolean  @default(false)
+  certification String   @default("")
+  examDetails   String   @default("")
+  iconUrl       String   @default("")
+  sortOrder     Int      @default(0)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Certificate {
+  id          String   @id @default(cuid())
+  title       String
+  section     String   @default("General")
+  imageUrl    String   @default("")
+  description String   @default("")
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model User {
+  id              String    @id @default(cuid())
+  username        String    @unique
+  passwordHash    String
+  displayName     String
+  role            String    @default("admin")
+  permissions     String    @default("{\"courses\":{\"read\":true,\"write\":true},\"faculty\":{\"read\":true,\"write\":true},\"gallery\":{\"read\":true,\"write\":true},\"videos\":{\"read\":true,\"write\":true},\"certificates\":{\"read\":true,\"write\":true}}")
+  isActive        Boolean   @default(true)
+  failedAttempts  Int       @default(0)
+  lockedUntil     DateTime?
+  lastLogin       DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Enquiry {
+  id          String   @id @default(cuid())
+  name        String
+  phone       String
+  email       String   @default("")
+  course      String   @default("")
+  message     String   @default("")
+  source      String   @default("website")
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model FacultyAccount {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  facultyId       String   @default("")
+  displayName     String   @default("")
+  accessGranted   Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model ChatSession {
+  id          String   @id @default(cuid())
+  sessionId   String
+  role        String
+  content     String
+  createdAt   DateTime @default(now())
+
+  @@index([sessionId])
+}
