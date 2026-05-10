@@ -83,7 +83,7 @@ export default function Header() {
             {/* LEFT: Logo */}
             <Link href="/" className="flex-shrink-0 group">
               <Image src="/logo-impact-transparent.png" alt="Impact Computers" width={100} height={100} priority
-                className="h-[68px] sm:h-[76px] lg:h-[90px] w-auto object-contain drop-shadow-md transition-transform duration-300 group-hover:scale-105" />
+                className="h-[72px] sm:h-[80px] lg:h-[94px] w-auto object-contain drop-shadow-md transition-transform duration-300 group-hover:scale-120" />
             </Link>
 
             {/* CENTER: Institute Name */}
@@ -119,20 +119,20 @@ export default function Header() {
           <div className="flex sm:hidden items-center h-[62px]">
             {/* LEFT: Logo (small) */}
             <Link href="/" className="flex-shrink-0 mx-1">
-              <Image src="/logo-impact-transparent.png" alt="Impact Computers" width={48} height={48} priority
+              <Image src="/logo-impact-transparent.png" alt="Impact Computers" width={52} height={52} priority
                 className="h-9 w-auto object-contain" />
             </Link>
 
             {/* CENTER: Impact Computers Name */}
             <div className="flex-1 flex flex-col items-center justify-center min-w-0 mx-1">
               <div className="mt-1"></div>
-              <span className="text-[5px] font-bold text-[#1a237e] tracking-wide leading-none" style={GEORGIA}>
+              <span className="text-[9px] font-bold text-[#1a237e] tracking-wide leading-none" style={GEORGIA}>
                 महाराष्ट्र राज्य कौशल्य विकास मंडळ प्रमाणित
               </span>
-              <span className="text-[6px] font-bold text-[#0d47a1] tracking-wide leading-tight" style={GEORGIA}>
+              <span className="text-[10px] font-bold text-[#0d47a1] tracking-wide leading-tight" style={GEORGIA}>
                 MS-CIT Authorised Center
               </span>
-              <span className="text-[15px] text-[#c62828] leading-none" style={IMPACT}>impact computers</span>
+              <span className="text-[21px] text-[#c62828] leading-none" style={IMPACT}>impact computers</span>
             </div>
 
             {/* RIGHT: Hamburger + compact logos row */}
