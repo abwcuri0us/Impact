@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, Menu, X, Sun, Moon, ChevronDown, Camera, GraduationCap, Award, Video, Lock } from 'lucide-react';
+import { Phone, Menu, X, Sun, Moon, ChevronDown, Camera, GraduationCap, Award, Video, Lock, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/components/ThemeProvider';
 
@@ -34,14 +34,50 @@ const allNavItems = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [callDropdownOpen, setCallDropdownOpen] = useState(false);
+  const [mobileCallDropdownOpen, setMobileCallDropdownOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const pathname = usePathname();
 
   // Avoid hydration mismatch: defer theme-aware icon rendering until after mount
   useEffect(() => { setMounted(true); }, []);
+useEffect(() => {
+  const handleClickOutside = () => {
+    setCallDropdownOpen(false);
+    setMobileCallDropdownOpen(false);
+  };
 
-  useEffect(() => { setMobileMenuOpen(false); setActiveDropdown(null); }, [pathname]);
+  if (callDropdownOpen) {
+    document.addEventListener('click', handleClickOutside);
+  }
+
+  return () => {
+    document.removeEventListener('click', handleClickOutside);
+  };
+}, [callDropdownOpen]);
+  useEffect(() => {
+  const handleEscape = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      setCallDropdownOpen(false);
+      setMobileCallDropdownOpen(false);
+    }
+  };
+
+  window.addEventListener('keydown', handleEscape);
+
+  return () => {
+    window.removeEventListener('keydown', handleEscape);
+  };
+}, []);
+  
+useEffect(() => { 
+  setMobileMenuOpen(false); 
+  setActiveDropdown(null);
+  setCallDropdownOpen(false);
+    setMobileCallDropdownOpen(false);
+}, [pathname]);
+  
   useEffect(() => {
     const h = () => setActiveDropdown(null);
     window.addEventListener('scroll', h, true);
@@ -205,11 +241,151 @@ export default function Header() {
               })}
             </div>
             <div className="flex items-center gap-2 ml-auto pl-3 flex-shrink-0">
-              <a href="tel:9768100649">
-                <Button variant="outline" size="sm" className="h-[36px] border-white/30 text-white hover:bg-white hover:text-brand-purple bg-white/10 text-xs font-bold whitespace-nowrap">
-                  <Phone className="w-3.5 h-3.5 mr-1.5" />Call Now
-                </Button>
-              </a>
+             <div className="relative">
+  <Button
+    variant="outline"
+    size="sm"
+    aria-expanded={callDropdownOpen}
+    aria-haspopup="true"
+    onClick={(e) => {
+      e.stopPropagation();
+      setCallDropdownOpen(!callDropdownOpen);
+    }}
+    className="h-[36px] border-white/30 text-white hover:bg-white hover:text-brand-purple bg-white/10 text-xs font-bold whitespace-nowrap transition-all duration-300"
+  >
+    <Phone className="w-3.5 h-3.5 mr-1.5" />
+    Call Now
+    <ChevronDown
+      className={`w-3.5 h-3.5 ml-1 transition-transform duration-300 ${
+        callDropdownOpen ? 'rotate-180' : ''
+      }`}
+    />
+  </Button>
+
+  <AnimatePresence>
+    {callDropdownOpen && (
+      <motion.div
+  onClick={(e) => e.stopPropagation()}
+  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+  animate={{ opacity: 1, y: 0, scale: 1 }}
+  exit={{ opacity: 0, y: 8, scale: 0.96 }}
+  transition={{ duration: 0.2 }}
+  className="absolute right-0 top-full mt-3 w-[330px] bg-white/95 dark:bg-card/95 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.25)] border border-gray-100 dark:border-white/10 overflow-hidden z-50 backdrop-blur-xl"
+>
+        {/* Header */}
+        <div className="px-4 py-3 bg-gradient-to-r from-brand-purple to-purple-700">
+          <h3 className="text-white text-sm font-bold tracking-wide">
+            Contact Our Branches
+          </h3>
+          <p className="text-white/70 text-[11px] mt-0.5">
+            Click any branch to call directly
+          </p>
+        </div>
+
+        {/* Branches */}
+        <div className="p-2">
+
+          {/* Sector 19 */}
+          <a
+            href="tel:9819741456"
+            className="flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-brand-purple/5 transition-all duration-300 group"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-full bg-brand-purple/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <MapPin className="w-4 h-4 text-brand-purple" />
+              </div>
+
+              <div>
+                <p className="text-sm font-bold text-gray-800 dark:text-white">
+                  Koparkhairne Sector 19
+                </p>
+
+                <p className="text-xs text-gray-500">
+                  9819741456
+                </p>
+              </div>
+            </div>
+
+            <Phone className="w-4 h-4 text-brand-purple group-hover:scale-125 transition-transform duration-300" />
+          </a>
+
+          {/* Sector 12B */}
+          <a
+            href="tel:9987025098"
+            className="flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-brand-purple/5 transition-all duration-300 group"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-full bg-brand-purple/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <MapPin className="w-4 h-4 text-brand-purple" />
+              </div>
+
+              <div>
+                <p className="text-sm font-bold text-gray-800 dark:text-white">
+                  Koparkhairne Sector 12B
+                </p>
+
+                <p className="text-xs text-gray-500">
+                  9987025098
+                </p>
+              </div>
+            </div>
+
+            <Phone className="w-4 h-4 text-brand-purple group-hover:scale-125 transition-transform duration-300" />
+          </a>
+
+          {/* Ghansoli Sector 7 */}
+          <a
+            href="tel:9768100649"
+            className="flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-brand-purple/5 transition-all duration-300 group"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-full bg-brand-purple/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <MapPin className="w-4 h-4 text-brand-purple" />
+              </div>
+
+              <div>
+                <p className="text-sm font-bold text-gray-800 dark:text-white">
+                  Ghansoli Sector 7
+                </p>
+
+                <p className="text-xs text-gray-500">
+                  9768100649
+                </p>
+              </div>
+            </div>
+
+            <Phone className="w-4 h-4 text-brand-purple group-hover:scale-125 transition-transform duration-300" />
+          </a>
+
+          {/* Ghansoli Sector 5 */}
+          <a
+            href="tel:8454044041"
+            className="flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-brand-purple/5 transition-all duration-300 group"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-full bg-brand-purple/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <MapPin className="w-4 h-4 text-brand-purple" />
+              </div>
+
+              <div>
+                <p className="text-sm font-bold text-gray-800 dark:text-white">
+                  Ghansoli Sector 5
+                </p>
+
+                <p className="text-xs text-gray-500">
+                  8454044041
+                </p>
+              </div>
+            </div>
+
+            <Phone className="w-4 h-4 text-brand-purple group-hover:scale-125 transition-transform duration-300" />
+          </a>
+
+        </div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</div>
               <Link href="/enquiry">
                 <Button size="sm" className="h-[36px] bg-brand-yellow text-brand-purple-deep hover:bg-brand-yellow-light font-bold shadow-md text-xs whitespace-nowrap">Enroll Now</Button>
               </Link>
@@ -304,11 +480,116 @@ export default function Header() {
                   {mounted ? (theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />) : <Moon className="w-4 h-4" />}
                   {mounted ? (theme === 'light' ? 'Dark Mode' : 'Light Mode') : 'Dark Mode'}
                 </button>
-                <a href="tel:9768100649" onClick={() => setMobileMenuOpen(false)} className="block">
-                  <Button variant="outline" className="w-full border-brand-purple text-brand-purple hover:bg-brand-purple hover:text-white text-sm font-bold">
-                    <Phone className="w-4 h-4 mr-2" />Call: 9768100649
-                  </Button>
-                </a>
+              <div className="space-y-2">
+
+  <Button
+    variant="outline"
+    onClick={(e) => {
+      e.stopPropagation();
+      setMobileCallDropdownOpen(!mobileCallDropdownOpen);
+    }}
+    className="w-full border-brand-purple text-brand-purple hover:bg-brand-purple hover:text-white text-sm font-bold flex items-center justify-between"
+  >
+    <span className="flex items-center">
+      <Phone className="w-4 h-4 mr-2" />
+      Call Branch
+    </span>
+
+    <ChevronDown
+      className={`w-4 h-4 transition-transform duration-300 ${
+      mobileCallDropdownOpen ? 'rotate-180' : ''
+      }`}
+    />
+  </Button>
+
+  <AnimatePresence>
+    {mobileCallDropdownOpen && (
+      <motion.div
+        initial={{ opacity: 0, height: 0 }}
+        animate={{ opacity: 1, height: 'auto' }}
+        exit={{ opacity: 0, height: 0 }}
+        transition={{ duration: 0.25 }}
+        className="overflow-hidden"
+      >
+        <div className="space-y-2 pt-1">
+
+          <a
+            href="tel:9819741456"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between p-3 rounded-xl bg-brand-purple/5 hover:bg-brand-purple/10 transition-all"
+          >
+            <div>
+              <p className="text-sm font-bold text-brand-purple">
+                Koparkhairne Sector 19
+              </p>
+
+              <p className="text-xs text-gray-500">
+                9819741456
+              </p>
+            </div>
+
+            <Phone className="w-4 h-4 text-brand-purple" />
+          </a>
+
+          <a
+            href="tel:9987025098"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between p-3 rounded-xl bg-brand-purple/5 hover:bg-brand-purple/10 transition-all"
+          >
+            <div>
+              <p className="text-sm font-bold text-brand-purple">
+                Koparkhairne Sector 12B
+              </p>
+
+              <p className="text-xs text-gray-500">
+                9987025098
+              </p>
+            </div>
+
+            <Phone className="w-4 h-4 text-brand-purple" />
+          </a>
+
+          <a
+            href="tel:9768100649"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between p-3 rounded-xl bg-brand-purple/5 hover:bg-brand-purple/10 transition-all"
+          >
+            <div>
+              <p className="text-sm font-bold text-brand-purple">
+                Ghansoli Sector 7
+              </p>
+
+              <p className="text-xs text-gray-500">
+                9768100649
+              </p>
+            </div>
+
+            <Phone className="w-4 h-4 text-brand-purple" />
+          </a>
+
+          <a
+            href="tel:8454044041"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between p-3 rounded-xl bg-brand-purple/5 hover:bg-brand-purple/10 transition-all"
+          >
+            <div>
+              <p className="text-sm font-bold text-brand-purple">
+                Ghansoli Sector 5
+              </p>
+
+              <p className="text-xs text-gray-500">
+                8454044041
+              </p>
+            </div>
+
+            <Phone className="w-4 h-4 text-brand-purple" />
+          </a>
+
+        </div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</div>
                 <Link href="/enquiry" onClick={() => setMobileMenuOpen(false)} className="block">
                   <Button className="w-full bg-brand-yellow text-brand-purple-deep hover:bg-brand-yellow-light font-bold text-sm">Enroll Now</Button>
                 </Link>
