@@ -39,7 +39,7 @@ export default function ContactPage() {
       color: 'from-brand-purple-dark to-brand-purple-deep',
 
       address: 'Shop No. 01, Sicily Park, Front of Corporation Bank, Plot No. 54, Sector 12B, Kopar Khairane, Navi Mumbai, Maharashtra 400709',
-      phone: '9819241456',
+      phone: '9987025098',
       email: 'impactbon@gmail.com',
       mapSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3769.2!2d73.012!3d19.207!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1sSicily+Park+Kopar+Khairane!2sImpact+Computer+Academy!5e0!3m2!1sen!2sin!4v1',
       mapTitle: 'Koparkhairne Branch 2 - Sicily Park',
